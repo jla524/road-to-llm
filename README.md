@@ -31,8 +31,8 @@ pip install -e .
 ### Section 3: Language
 
 - [Attention Is All You Need (2017)][12]
-- [Language Models are Unsupervised Multitask Learners (2019)][13]
-- [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding(2019)][14]
+- [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding(2019)][13]
+- [Language Models are Unsupervised Multitask Learners (2019)][14]
 
 ### Section 4: SOTA
 
@@ -59,8 +59,8 @@ pip install -e .
 [10]: https://arxiv.org/abs/1512.03385
 [11]: https://arxiv.org/abs/2010.11929
 [12]: https://arxiv.org/abs/1706.03762
-[13]: https://paperswithcode.com/paper/language-models-are-unsupervised-multitask
-[14]: https://arxiv.org/abs/1810.04805
+[13]: https://arxiv.org/abs/1810.04805
+[14]: https://paperswithcode.com/paper/language-models-are-unsupervised-multitask
 [15]: https://arxiv.org/abs/2302.13971
 [16]: https://arxiv.org/abs/2310.06825
 [17]: https://arxiv.org/abs/2312.00752
