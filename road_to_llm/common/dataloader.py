@@ -8,6 +8,7 @@ from torch.utils.data.distributed import Dataset
 from torchvision import datasets, transforms
 
 ROOTDIR = Path(__file__).parent.parent.parent / "datasets"
+ROOTDIR.mkdir(exist_ok=True)
 
 
 def fetch_mnist(download=True):
