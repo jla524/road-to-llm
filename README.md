@@ -22,13 +22,13 @@ pip install -e .
 - [Building Models with PyTorch][7]
 - [Training with PyTorch][8]
 
-### Section 2: Vision
+### Section 2: Bringup
 
 - [Deep Learning in Neural Networks (2014)][9]
 - [Deep Residual Learning for Image Recognition (2015)][10]
 - [Transformers for Image Recognition at Scale (2020)][11]
 
-### Section 3: Language
+### Section 3: Transformer
 
 - [Attention Is All You Need (2017)][12]
 - [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding(2019)][13]
