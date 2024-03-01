@@ -1,4 +1,3 @@
-from transformers.pipelines.object_detection import Predictions
 import evaluate
 from datasets import Dataset
 from sklearn.model_selection import train_test_split
