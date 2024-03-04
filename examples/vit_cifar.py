@@ -19,9 +19,25 @@ train_dataset, test_dataset = fetch_cifar10()
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-model = ViT(image_size=224, patch_size=14, num_classes=10, dim=1024, depth=6, heads=8, mlp_dim=128, emb_dropout=0.1, dropout=0.1)
+model = ViT(
+    image_size=224,
+    patch_size=14,
+    num_classes=10,
+    dim=1024,
+    depth=6,
+    heads=8,
+    mlp_dim=128,
+    emb_dropout=0.1,
+    dropout=0.1,
+)
 model.to(device)
-optimizer = optim.SGD(model.parameters(), lr=learning_rate, weight_decay=weight_decay, momentum=momentum)
+
+optimizer = optim.SGD(
+    model.parameters(),
+    lr=learning_rate,
+    weight_decay=weight_decay,
+    momentum=momentum,
+)
 criterion = nn.CrossEntropyLoss()
 
 for epoch in range(1, num_epochs + 1):
