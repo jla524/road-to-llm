@@ -21,10 +21,8 @@ class Attention(nn.Module):
         self.attend = nn.Softmax(dim=-1)
         self.dropout = nn.Dropout(dropout)
         self.to_qkv = nn.Linear(dim, inner_dim * 3, bias=False)
-        if not (heads == 1 and dim_head == dim):
-            self.to_out = nn.Sequential(nn.Linear(inner_dim, dim), nn.Dropout(dropout))
-        else:
-            self.to_out = nn.Identity()
+        layers = nn.Sequential(nn.Linear(inner_dim, dim), nn.Dropout(dropout))
+        self.to_out = nn.Identity() if (heads == 1 and dim_head == dim) else layers
 
     def __call__(self, x):
         x = self.norm(x)
@@ -58,10 +56,11 @@ class Transformer(nn.Module):
         self.norm = nn.LayerNorm(dim)
         self.layers = nn.ModuleList([])
         for _ in range(depth):
-            self.layers.append(nn.ModuleList([
+            layer = nn.ModuleList([
                 Attention(dim, heads=heads, dim_head=dim_head, dropout=dropout),
-                FeedForward(dim, mlp_dim, dropout=dropout)
-            ]))
+                FeedForward(dim, mlp_dim, dropout=dropout),
+            ])
+            self.layers.append(layer)
 
     def __call__(self, x):
         for attn, ff in self.layers:

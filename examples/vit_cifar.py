@@ -21,7 +21,7 @@ test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
 model = ViT(
     image_size=224,
-    patch_size=14,
+    patch_size=16,
     num_classes=10,
     dim=1024,
     depth=6,
