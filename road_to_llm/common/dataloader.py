@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 from http import HTTPStatus
 from io import StringIO
@@ -39,3 +40,24 @@ def fetch_spamdata(download=True):
         df = pd.read_csv(StringIO(response.text))
         df.to_csv(file_path, index=False)
     return df
+
+
+def fetch_squad(download=True):
+    train_url = "https://rajpurkar.github.io/SQuAD-explorer/dataset/train-v2.0.json"
+    test_url = "https://rajpurkar.github.io/SQuAD-explorer/dataset/dev-v2.0.json"
+    dataset_path = ROOTDIR / "squad"
+    dataset_path.mkdir(exist_ok=True)
+    datasets = []
+    for url in (train_url, test_url):
+        file_path = dataset_path / url.split("/")[-1]
+        if file_path.exists():
+            with file_path.open("r") as file:
+                dataset = json.load(file)
+        else:
+            response = requests.get(url)
+            assert response.status_code == HTTPStatus.OK
+            dataset = json.loads(response.text)
+            with file_path.open("w") as file:
+                json.dump(dataset, file)
+        datasets.append(dataset)
+    return datasets
