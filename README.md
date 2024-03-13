@@ -22,23 +22,23 @@ pip install -e .
 - [Building Models with PyTorch][7]
 - [Training with PyTorch][8]
 
-### Section 2: Bringup
+### Section 2: Vision
 
 - [Deep Learning in Neural Networks (2014)][9]
 - [Deep Residual Learning for Image Recognition (2015)][10]
 - [Transformers for Image Recognition at Scale (2020)][11]
 
-### Section 3: Transformer
+### Section 3: Language - Part 1
 
 - [Attention Is All You Need (2017)][12]
 - [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding(2019)][13]
 - [Language Models are Unsupervised Multitask Learners (2019)][14]
 
-### Section 4: SOTA
+### Section 4: Language - Part 2
 
-- [LLaMA: Open and Efficient Foundation Language Models (2023)][15]
-- [Mistral 7B (2023)][16]
-- [Mamba: Linear-Time Sequence Modeling with Selective State Spaces (2023)][17]
+- [Language Models are Few-Shot Learners (2020)][15]
+- [LLaMA: Open and Efficient Foundation Language Models (2023)][16]
+- [Mistral 7B (2023)][17]
 
 ## Resources
 
@@ -61,9 +61,9 @@ pip install -e .
 [12]: https://arxiv.org/abs/1706.03762
 [13]: https://arxiv.org/abs/1810.04805
 [14]: https://paperswithcode.com/paper/language-models-are-unsupervised-multitask
-[15]: https://arxiv.org/abs/2302.13971
-[16]: https://arxiv.org/abs/2310.06825
-[17]: https://arxiv.org/abs/2312.00752
+[15]: https://arxiv.org/abs/2005.14165
+[16]: https://arxiv.org/abs/2302.13971
+[17]: https://arxiv.org/abs/2310.06825
 [18]: https://mlcommons.org/
 [19]: https://www.databricks.com/blog/now-available-new-generative-ai-learning-offerings
 [20]: https://openreview.net/forum?id=oapKSVM2bcj
