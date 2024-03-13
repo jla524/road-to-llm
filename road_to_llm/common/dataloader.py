@@ -47,17 +47,17 @@ def fetch_squad(download=True):
     test_url = "https://rajpurkar.github.io/SQuAD-explorer/dataset/dev-v2.0.json"
     dataset_path = ROOTDIR / "squad"
     dataset_path.mkdir(exist_ok=True)
-    datasets = []
+    dataset = []
     for url in (train_url, test_url):
         file_path = dataset_path / url.split("/")[-1]
         if file_path.exists():
             with file_path.open("r") as file:
-                dataset = json.load(file)
+                data = json.load(file)
         else:
             response = requests.get(url)
             assert response.status_code == HTTPStatus.OK
-            dataset = json.loads(response.text)
+            data = json.loads(response.text)
             with file_path.open("w") as file:
-                json.dump(dataset, file)
-        datasets.append(dataset)
-    return datasets
+                json.dump(data, file)
+        dataset.append(data)
+    return dataset

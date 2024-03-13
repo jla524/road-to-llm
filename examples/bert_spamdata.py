@@ -1,14 +1,14 @@
 import evaluate
 from datasets import Dataset
 from sklearn.model_selection import train_test_split
-from transformers import AutoModelForSequenceClassification, BertTokenizerFast, TrainingArguments, Trainer
+from transformers import AutoModelForSequenceClassification, BertTokenizer, TrainingArguments, Trainer
 from road_to_llm.common.dataloader import fetch_spamdata
 
 dataset = fetch_spamdata()
 
-pretrained_model = "google-bert/bert-base-uncased"
-model = AutoModelForSequenceClassification.from_pretrained(pretrained_model, num_labels=2)
-tokenizer = BertTokenizerFast.from_pretrained(pretrained_model)
+model_name = "google-bert/bert-base-uncased"
+model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=2)
+tokenizer = BertTokenizer.from_pretrained(model_name)
 metric = evaluate.load("accuracy")
 
 
@@ -30,10 +30,7 @@ def compute_metrics(eval_pred):
     result = metric.compute(predictions=predictions, references=labels)
     return result
 
-training_args = TrainingArguments(
-    output_dir=f"outputs/{pretrained_model}",
-    evaluation_strategy="epoch",
-)
+training_args = TrainingArguments(output_dir=f"outputs/{model_name}", evaluation_strategy="epoch")
 trainer = Trainer(
     model=model,
     args=training_args,
