@@ -39,5 +39,5 @@ for epoch in range(1, num_epochs + 1):
         target = target.to(device)
         predictions = model(data).argmax(-1)
         correct += (predictions == target).sum().item()
-    learning_rate *= 0.7  # yields higher accuracy than weight decay!
+    learning_rate *= 0.7
     print(f"test accuracy = {correct / len(test_dataset):.4f}\n")
