@@ -28,14 +28,11 @@ pip install -e .
 - [Deep Residual Learning for Image Recognition (2015)][10]
 - [Transformers for Image Recognition at Scale (2020)][11]
 
-### Section 3: Language - Part 1
+### Section 3: Language
 
 - [Attention Is All You Need (2017)][12]
 - [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding(2019)][13]
 - [Language Models are Unsupervised Multitask Learners (2019)][14]
-
-### Section 4: Language - Part 2
-
 - [Language Models are Few-Shot Learners (2020)][15]
 - [LLaMA: Open and Efficient Foundation Language Models (2023)][16]
 - [Mistral 7B (2023)][17]
