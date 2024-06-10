@@ -25,23 +25,24 @@ pip install -e .
 ### Section 2: Vision
 
 - [Deep Learning in Neural Networks (2014)][9]
-- [Deep Residual Learning for Image Recognition (2015)][10]
-- [Transformers for Image Recognition at Scale (2020)][11]
+- [An Introduction to Convolutional Neural Networks][10]
+- [Deep Residual Learning for Image Recognition (2015)][11]
+- [Transformers for Image Recognition at Scale (2020)][12]
 
 ### Section 3: Language
 
-- [Attention Is All You Need (2017)][12]
-- [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding(2019)][13]
-- [Language Models are Unsupervised Multitask Learners (2019)][14]
-- [Language Models are Few-Shot Learners (2020)][15]
-- [LLaMA: Open and Efficient Foundation Language Models (2023)][16]
-- [Mistral 7B (2023)][17]
+- [Attention Is All You Need (2017)][13]
+- [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding(2019)][14]
+- [Language Models are Unsupervised Multitask Learners (2019)][15]
+- [Language Models are Few-Shot Learners (2020)][16]
+- [LLaMA: Open and Efficient Foundation Language Models (2023)][17]
+- [Mistral 7B (2023)][18]
 
 ## Resources
 
-- [MLCommons | Machine Learning Innovation][18]
-- [Now Available: New Generative AI Learning Offerings (Databricks)][19]
-- [Einops: Clear and Reliable Tensor Manipulations with Einstein-like Notation][20]
+- [MLCommons | Machine Learning Innovation][19]
+- [Now Available: New Generative AI Learning Offerings (Databricks)][20]
+- [Einops: Clear and Reliable Tensor Manipulations with Einstein-like Notation][21]
 
 
 [1]: https://en.wikipedia.org/wiki/Tensor
@@ -53,14 +54,15 @@ pip install -e .
 [7]: https://pytorch.org/tutorials/beginner/introyt/modelsyt_tutorial.html
 [8]: https://pytorch.org/tutorials/beginner/introyt/trainingyt.html
 [9]: https://arxiv.org/abs/1404.7828
-[10]: https://arxiv.org/abs/1512.03385
-[11]: https://arxiv.org/abs/2010.11929
-[12]: https://arxiv.org/abs/1706.03762
-[13]: https://arxiv.org/abs/1810.04805
-[14]: https://paperswithcode.com/paper/language-models-are-unsupervised-multitask
-[15]: https://arxiv.org/abs/2005.14165
-[16]: https://arxiv.org/abs/2302.13971
-[17]: https://arxiv.org/abs/2310.06825
-[18]: https://mlcommons.org/
-[19]: https://www.databricks.com/blog/now-available-new-generative-ai-learning-offerings
-[20]: https://openreview.net/forum?id=oapKSVM2bcj
+[10]: https://arxiv.org/abs/1511.08458
+[11]: https://arxiv.org/abs/1512.03385
+[12]: https://arxiv.org/abs/2010.11929
+[13]: https://arxiv.org/abs/1706.03762
+[14]: https://arxiv.org/abs/1810.04805
+[15]: https://paperswithcode.com/paper/language-models-are-unsupervised-multitask
+[16]: https://arxiv.org/abs/2005.14165
+[17]: https://arxiv.org/abs/2302.13971
+[18]: https://arxiv.org/abs/2310.06825
+[19]: https://mlcommons.org/
+[20]: https://www.databricks.com/blog/now-available-new-generative-ai-learning-offerings
+[21]: https://openreview.net/forum?id=oapKSVM2bcj
