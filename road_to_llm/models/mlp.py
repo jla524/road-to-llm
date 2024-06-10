@@ -4,7 +4,7 @@ https://github.com/geohot/ai-notebooks/blob/master/mnist_from_scratch.ipynb
 from torch import nn, tensor
 
 
-class NeuralNet(nn.Module):
+class MLP(nn.Module):
     def __init__(self, in_features: int, out_features: int, hidden_features: int = 128):
         super().__init__()
         self.l1 = nn.Linear(in_features, hidden_features)

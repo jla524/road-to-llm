@@ -3,7 +3,7 @@ import torch
 from torch import nn, optim
 from torch.utils.data import DataLoader
 from road_to_llm.common.dataloader import fetch_mnist
-from road_to_llm.models.neural_net import NeuralNet
+from road_to_llm.models.mlp import MLP
 
 torch.manual_seed(42)
 
@@ -15,7 +15,7 @@ train_dataset, test_dataset = fetch_mnist()
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-model = NeuralNet(784, 10)
+model = MLP(784, 10)
 criterion = nn.CrossEntropyLoss()
 
 for epoch in range(1, num_epochs + 1):
