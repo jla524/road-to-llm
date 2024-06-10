@@ -32,7 +32,7 @@ pip install -e .
 ### Section 3: Language
 
 - [Attention Is All You Need (2017)][13]
-- [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding(2019)][14]
+- [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding (2019)][14]
 - [Language Models are Unsupervised Multitask Learners (2019)][15]
 - [Language Models are Few-Shot Learners (2020)][16]
 - [LLaMA: Open and Efficient Foundation Language Models (2023)][17]
