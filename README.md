@@ -2,11 +2,11 @@
 
 A learning roadmap from the [tensor][1] to [large language models (LLMs)][2].
 
-Inspired by [fromthetensor][3] and [tinygrad][4].
+Inspired by [fromthetensor][3] and [ai-notebooks][4].
 
 ## Quickstart Guide
 
-Setting up a [virtual environment][5] is highly recommended.
+A [virtual environment][5] is highly recommended.
 
 ```
 python3 -m venv env
@@ -48,7 +48,7 @@ pip install -e .
 [1]: https://en.wikipedia.org/wiki/Tensor
 [2]: https://en.wikipedia.org/wiki/Large_language_model
 [3]: https://github.com/jla524/fromthetensor
-[4]: https://github.com/tinygrad/tinygrad
+[4]: https://github.com/geohot/ai-notebooks
 [5]: https://www.freecodecamp.org/news/how-to-setup-virtual-environments-in-python/
 [6]: https://pytorch.org/tutorials/beginner/introyt/introyt1_tutorial.html
 [7]: https://pytorch.org/tutorials/beginner/introyt/modelsyt_tutorial.html
