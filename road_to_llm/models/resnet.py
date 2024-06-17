@@ -83,9 +83,15 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def __call__(self, x):
-        x = self.maxpool(self.bn1(self.conv1(x)).relu())
-        x = self.avgpool(self.layer4(self.layer3(self.layer2(self.layer1(x)))))
-        return self.fc(torch.flatten(x, 1))
+        x = self.bn1(self.conv1(x)).relu()
+        x = self.maxpool(x)
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        x = self.layer4(x)
+        x = self.avgpool(x)
+        x = torch.flatten(x, 1)
+        return self.fc(x)
 
 
 def resnet50(**kwargs):
