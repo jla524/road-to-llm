@@ -5,7 +5,6 @@ from io import StringIO
 import torch
 import requests
 import pandas as pd
-from torch.utils.data.distributed import Dataset
 from torchvision import datasets, transforms
 
 ROOTDIR = Path(__file__).parent.parent.parent / "extra" / "datasets"
