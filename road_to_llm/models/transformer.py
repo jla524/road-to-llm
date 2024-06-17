@@ -60,7 +60,8 @@ class PositionWiseFeedForward(nn.Module):
         self.l2 = nn.Linear(hidden_dims, input_dims)
 
     def __call__(self, x):
-        return self.l2(self.l1(x).relu())
+        x = self.l1(x).relu()
+        return self.l2(x)
 
 
 class EncoderLayer(nn.Module):
