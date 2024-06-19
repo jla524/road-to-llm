@@ -9,7 +9,7 @@ from road_to_llm.models.convnet import ConvNet
 torch.manual_seed(42)
 device = get_gpu()
 
-num_epochs = 10
+num_epochs = 8
 batch_size = 128
 learning_rate = 0.005
 
@@ -39,5 +39,5 @@ for epoch in range(1, num_epochs + 1):
         target = target.to(device)
         predictions = model(data).argmax(-1)
         correct += (predictions == target).sum().item()
-    learning_rate *= 0.7
+    learning_rate *= 0.6
     print(f"test accuracy = {correct / len(test_dataset):.4f}\n")
