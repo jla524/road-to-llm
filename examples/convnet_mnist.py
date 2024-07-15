@@ -8,7 +8,7 @@ batch_size = 128
 X_train, Y_train, X_test, Y_test = nn.datasets.mnist()
 
 model = ConvNet()
-opt= nn.optim.Adam(nn.state.get_parameters(model))
+opt = nn.optim.Adam(nn.state.get_parameters(model))
 
 @TinyJit
 def train_step() -> Tensor:
