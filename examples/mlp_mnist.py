@@ -1,11 +1,12 @@
 from tinygrad import Tensor, nn, TinyJit
 from tinygrad.helpers import getenv, trange
 from road_to_llm.models.mlp import MLP
+from road_to_llm.common.datasets import fetch_mnist
 
 Tensor.manual_seed(42)
 
-X_train, Y_train, X_test, Y_test = nn.datasets.mnist()
 model = MLP()
+X_train, Y_train, X_test, Y_test = fetch_mnist(tensors=True)
 opt = nn.optim.Adam(nn.state.get_parameters(model))
 
 @TinyJit
