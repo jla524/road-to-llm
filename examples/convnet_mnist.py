@@ -9,6 +9,7 @@ model = ConvNet()
 X_train, Y_train, X_test, Y_test = fetch_mnist(tensors=True)
 opt = nn.optim.Adam(nn.state.get_parameters(model))
 
+
 @TinyJit
 def train_step() -> Tensor:
     with Tensor.train():
