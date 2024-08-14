@@ -9,7 +9,7 @@ model = resnet50(num_classes=10)
 X_train, Y_train, X_test, Y_test = fetch_cifar()
 X_train, Y_train= X_train.reshape(-1, 3, 32, 32).to(device=Device.DEFAULT).float(), Y_train.to(device=Device.DEFAULT)
 X_test, Y_test = X_test.reshape(-1, 3, 32, 32).to(device=Device.DEFAULT).float(), Y_test.to(device=Device.DEFAULT)
-opt = nn.optim.AdamW(nn.state.get_parameters(model))
+opt = nn.optim.SGD(nn.state.get_parameters(model))
 
 
 @TinyJit
