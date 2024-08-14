@@ -13,7 +13,7 @@ class Attention(nn.Module):
         self.heads = heads
         self.norm = nn.LayerNorm(dim)
         self.dropout_p = dropout
-        self.to_qkv = nn.Linear(dim, inner_dim * 3, bias=False)
+        self.to_qkv = nn.Linear(dim, 3 * inner_dim, bias=False)
         layers = [nn.Linear(inner_dim, dim), nn.Dropout(dropout)]
         self.to_out = [] if (heads == 1 and dim_head == dim) else layers
 
@@ -21,8 +21,8 @@ class Attention(nn.Module):
         x = self.norm(x)
         qkv = self.to_qkv(x).chunk(3, dim=-1)
         q, k, v = map(lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads), qkv)
-        out = q.scaled_dot_product_attention(k, v, dropout_p=self.dropout_p)
-        out = rearrange(out, "b h n d -> b n (h d)")
+        attention = q.scaled_dot_product_attention(k, v, dropout_p=self.dropout_p)
+        out = rearrange(attention, "b h n d -> b n (h d)")
         return out.sequential(self.to_out)
 
 
@@ -45,7 +45,6 @@ class FeedForward(nn.Module):
 class Transformer(nn.Module):
     def __init__(self, dim, depth, heads, dim_head, mlp_dim, dropout=0.):
         super().__init__()
-        self.norm = nn.LayerNorm(dim)
         self.layers = nn.ModuleList([])
         for _ in range(depth):
             layer = nn.ModuleList([
@@ -53,6 +52,7 @@ class Transformer(nn.Module):
                 FeedForward(dim, mlp_dim, dropout=dropout),
             ])
             self.layers.append(layer)
+        self.norm = nn.LayerNorm(dim)
 
     def __call__(self, x):
         for attn, ff in self.layers:
@@ -77,7 +77,6 @@ class ViT(nn.Module):
         self.dropout = nn.Dropout(emb_dropout)
         self.transformer = Transformer(dim, depth, heads, dim_head, mlp_dim, dropout)
         self.pool = pool
-        self.to_latent = nn.Identity()
         self.mlp_head = nn.Linear(dim, num_classes)
 
     def __call__(self, img):
@@ -89,5 +88,4 @@ class ViT(nn.Module):
         x = self.dropout(x)
         x = self.transformer(x)
         x = x.mean(dim=1) if self.pool == "mean" else x[:, 0]
-        x = self.to_latent(x)
         return self.mlp_head(x)
