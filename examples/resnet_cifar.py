@@ -16,7 +16,7 @@ opt = nn.optim.SGD(nn.state.get_parameters(model))
 def train_step() -> Tensor:
     with Tensor.train():
         opt.zero_grad()
-        samples = Tensor.randint(getenv("BS", 32), high=X_train.shape[0])
+        samples = Tensor.randint(getenv("BS", 512), high=X_train.shape[0])
         output = model(X_train[samples])
         loss = output.sparse_categorical_crossentropy(Y_train[samples])
         loss.backward()
@@ -30,7 +30,7 @@ def get_test_acc() -> Tensor:
 
 
 test_acc = float("nan")
-for i in (t := trange(1000)):
+for i in (t := trange(2500)):
     loss = train_step()
     if i % 10 == 9: test_acc = get_test_acc().item()
     t.set_description(f"loss: {loss.item():6.2f} test_accuracy: {test_acc:5.2f}%")
