@@ -48,7 +48,7 @@ class Transformer:
     self.tbs = [TransformerBlock(embed_dim, num_heads, ff_dim) for _ in range(layers)]
     self.final = Tensor.scaled_uniform(embed_dim, syms)
 
-  def forward(self, x):
+  def __call__(self, x):
     bs = x.shape[0]
 
     maxlen_eye = Tensor.eye(x.shape[1])
