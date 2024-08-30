@@ -7,16 +7,16 @@ Tensor.manual_seed(42)
 
 model = resnet50(num_classes=10)
 X_train, Y_train, X_test, Y_test = fetch_cifar()
-X_train, Y_train= X_train.reshape(-1, 3, 32, 32).to(device=Device.DEFAULT).float(), Y_train.to(device=Device.DEFAULT)
+X_train, Y_train = X_train.reshape(-1, 3, 32, 32).to(device=Device.DEFAULT).float(), Y_train.to(device=Device.DEFAULT)
 X_test, Y_test = X_test.reshape(-1, 3, 32, 32).to(device=Device.DEFAULT).float(), Y_test.to(device=Device.DEFAULT)
-opt = nn.optim.SGD(nn.state.get_parameters(model))
+opt = nn.optim.AdamW(nn.state.get_parameters(model), lr=0.0005)
 
 
 @TinyJit
 def train_step() -> Tensor:
     with Tensor.train():
         opt.zero_grad()
-        samples = Tensor.randint(getenv("BS", 512), high=X_train.shape[0])
+        samples = Tensor.randint(getenv("BS", 128), high=X_train.shape[0])
         output = model(X_train[samples])
         loss = output.sparse_categorical_crossentropy(Y_train[samples])
         loss.backward()

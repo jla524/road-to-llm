@@ -1,4 +1,4 @@
-from tinygrad import Tensor, nn, TinyJit
+from tinygrad import Tensor, Device, nn, TinyJit
 from tinygrad.helpers import getenv, trange
 from road_to_llm.models.vit import ViT
 from road_to_llm.common.datasets import fetch_cifar
@@ -7,6 +7,8 @@ Tensor.manual_seed(42)
 
 model = ViT()
 X_train, Y_train, X_test, Y_test = fetch_cifar()
+X_train, Y_train = X_train.reshape(-1, 3, 32, 32).to(device=Device.DEFAULT).float(), Y_train.to(device=Device.DEFAULT)
+X_test, Y_test = X_test.reshape(-1, 3, 32, 32).to(device=Device.DEFAULT).float(), Y_test.to(device=Device.DEFAULT)
 opt = nn.optim.Adam(nn.state.get_parameters(model))
 
 
