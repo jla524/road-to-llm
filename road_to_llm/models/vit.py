@@ -5,7 +5,7 @@ from tinygrad.tensor import Tensor
 from road_to_llm.models.transformer import TransformerBlock
 
 class ViT:
-    def __init__(self, *, image_size, patch_size, layers=12, embed_dim=192, num_heads=3):
+    def __init__(self, *, image_size, patch_size, num_classes, layers=12, embed_dim=192, num_heads=3):
         self.embedding = (Tensor.uniform(embed_dim, 3, patch_size, patch_size), Tensor.zeros(embed_dim))
         self.patch_size = patch_size
         self.embed_dim = embed_dim
@@ -16,7 +16,7 @@ class ViT:
                 prenorm=True, act=lambda x: x.gelu())
             for _ in range(layers)]
         self.encoder_norm = (Tensor.uniform(embed_dim), Tensor.zeros(embed_dim))
-        self.head = (Tensor.uniform(embed_dim, 1000), Tensor.zeros(1000))
+        self.head = (Tensor.uniform(embed_dim, num_classes), Tensor.zeros(num_classes))
 
     def patch_embed(self, x):
         x = x.conv2d(*self.embedding, stride=self.patch_size)

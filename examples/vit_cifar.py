@@ -5,7 +5,7 @@ from road_to_llm.common.datasets import fetch_cifar
 
 Tensor.manual_seed(42)
 
-model = ViT(image_size=32, patch_size=4, layers=3)
+model = ViT(image_size=32, patch_size=4, num_classes=10, layers=3, embed_dim=48)
 X_train, Y_train, X_test, Y_test = fetch_cifar()
 X_train, Y_train = X_train.reshape(-1, 3, 32, 32).to(device=Device.DEFAULT).float(), Y_train.to(device=Device.DEFAULT)
 X_test, Y_test = X_test.reshape(-1, 3, 32, 32).to(device=Device.DEFAULT).float(), Y_test.to(device=Device.DEFAULT)
@@ -30,7 +30,7 @@ def get_test_acc() -> Tensor:
 
 
 test_acc = float("nan")
-for i in (t := trange(5000)):
+for i in (t := trange(20000)):
     loss = train_step()
     if i % 10 == 9: test_acc = get_test_acc().item()
     t.set_description(f"loss: {loss.item():6.2f} test_accuracy: {test_acc:5.2f}%")
