@@ -16,11 +16,11 @@ class ViT:
 
   def patch_embed(self, x):
     x = x.conv2d(*self.embedding, stride=16)
-    x = x.reshape(shape=(x.shape[0], x.shape[1], -1)).permute(order=(0,2,1))
+    x = x.reshape(shape=(x.shape[0], x.shape[1], -1)).permute(order=(0, 2, 1))
     return x
 
-  def forward(self, x):
-    ce = self.cls.add(Tensor.zeros(x.shape[0],1,1))
+  def __call__(self, x):
+    ce = self.cls.add(Tensor.zeros(x.shape[0], 1 , 1))
     pe = self.patch_embed(x)
     x = ce.cat(pe, dim=1)
     x = x.add(self.pos_embedding).sequential(self.tbs)
