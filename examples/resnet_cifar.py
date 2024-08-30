@@ -1,43 +1,36 @@
-from tqdm import tqdm
-import torch
-from torch import nn, optim
-from torch.utils.data import DataLoader
-from road_to_llm.common.helpers import get_gpu
-from road_to_llm.common.dataloader import fetch_cifar10
+from tinygrad import Tensor, Device, nn, TinyJit
+from tinygrad.helpers import getenv, trange
 from road_to_llm.models.resnet import resnet50
+from road_to_llm.common.datasets import fetch_cifar
 
-torch.manual_seed(42)
-device = get_gpu()
+Tensor.manual_seed(42)
 
-num_epochs = 10
-batch_size = 32
-learning_rate = 0.005
-weight_decay = learning_rate / num_epochs
+model = resnet50(num_classes=10)
+X_train, Y_train, X_test, Y_test = fetch_cifar()
+X_train, Y_train = X_train.reshape(-1, 3, 32, 32).to(device=Device.DEFAULT).float(), Y_train.to(device=Device.DEFAULT)
+X_test, Y_test = X_test.reshape(-1, 3, 32, 32).to(device=Device.DEFAULT).float(), Y_test.to(device=Device.DEFAULT)
+opt = nn.optim.AdamW(nn.state.get_parameters(model), lr=0.0005)
 
-train_dataset, test_dataset = fetch_cifar10()
-train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-model = resnet50(num_classes=10, zero_init_residual=True)
-model.to(device)
-optimizer = optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
-criterion = nn.CrossEntropyLoss()
-
-for epoch in range(1, num_epochs + 1):
-    model.train()
-    for batch, (data, target) in (t := tqdm(enumerate(train_loader), total=len(train_loader))):
-        data = data.to(device)
-        target = target.to(device)
-        optimizer.zero_grad()
-        loss = criterion(model(data), target)
+@TinyJit
+def train_step() -> Tensor:
+    with Tensor.train():
+        opt.zero_grad()
+        samples = Tensor.randint(getenv("BS", 128), high=X_train.shape[0])
+        output = model(X_train[samples])
+        loss = output.sparse_categorical_crossentropy(Y_train[samples])
         loss.backward()
-        optimizer.step()
-        t.set_description(f"{epoch=} {batch=} loss={loss.item():.4f}")
-    model.eval()
-    correct = 0
-    for data, target in test_loader:
-        data = data.to(device)
-        target = target.to(device)
-        predictions = model(data).argmax(-1)
-        correct += (predictions == target).sum().item()
-    print(f"test accuracy = {correct / len(test_dataset):.4f}\n")
+        opt.step()
+        return loss
+
+
+@TinyJit
+def get_test_acc() -> Tensor:
+    return (model(X_test).argmax(axis=-1) == Y_test).mean() * 100
+
+
+test_acc = float("nan")
+for i in (t := trange(2500)):
+    loss = train_step()
+    if i % 10 == 9: test_acc = get_test_acc().item()
+    t.set_description(f"loss: {loss.item():6.2f} test_accuracy: {test_acc:5.2f}%")
