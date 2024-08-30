@@ -36,14 +36,6 @@ pip install -e .
 - [Language Models are Unsupervised Multitask Learners (2019)][15]
 - [Language Models are Few-Shot Learners (2020)][16]
 - [LLaMA: Open and Efficient Foundation Language Models (2023)][17]
-- [Mistral 7B (2023)][18]
-
-## Resources
-
-- [MLCommons | Machine Learning Innovation][19]
-- [Now Available: New Generative AI Learning Offerings (Databricks)][20]
-- [Einops: Clear and Reliable Tensor Manipulations with Einstein-like Notation][21]
-
 
 [1]: https://en.wikipedia.org/wiki/Tensor
 [2]: https://en.wikipedia.org/wiki/Large_language_model
@@ -62,7 +54,3 @@ pip install -e .
 [15]: https://paperswithcode.com/paper/language-models-are-unsupervised-multitask
 [16]: https://arxiv.org/abs/2005.14165
 [17]: https://arxiv.org/abs/2302.13971
-[18]: https://arxiv.org/abs/2310.06825
-[19]: https://mlcommons.org/
-[20]: https://www.databricks.com/blog/now-available-new-generative-ai-learning-offerings
-[21]: https://openreview.net/forum?id=oapKSVM2bcj
