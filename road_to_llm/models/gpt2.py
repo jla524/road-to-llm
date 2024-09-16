@@ -5,7 +5,7 @@ from typing import Optional, Union
 import tiktoken
 from tinygrad import Tensor, Variable, TinyJit
 from tinygrad.helpers import getenv, JIT, trange, fetch
-from tinygrad.nn import Linear, Attention, LayerNorm, Embedding
+from tinygrad.nn import Linear, LayerNorm, Embedding
 from tinygrad.nn.state import torch_load, load_state_dict
 
 
@@ -15,7 +15,7 @@ MODEL_PARAMS = {
     "gpt2": {"n_layers": 12, "n_heads": 12, "dim": 768, "norm_eps": 1e-5, "vocab_size": VOCAB_SIZE},  # 124M params
     "gpt2-medium": {"n_layers": 24, "n_heads": 16, "dim": 1024, "norm_eps": 1e-5, "vocab_size": VOCAB_SIZE},  # 350M params
     "gpt2-large": {"n_layers": 36, "n_heads": 20, "dim": 1280, "norm_eps": 1e-5, "vocab_size": VOCAB_SIZE},  # 774M params
-    "gpt2-xl": {"n_layers": 48, "n_heads": 25, "dim": 1680, "norm_eps": 1e-5, "vocab_size": VOCAB_SIZE},  # 1558M params
+    "gpt2-xl": {"n_layers": 48, "n_heads": 25, "dim": 1600, "norm_eps": 1e-5, "vocab_size": VOCAB_SIZE},  # 1558M params
 }
 
 
@@ -54,7 +54,7 @@ class Attention:
             values = xv
 
         xq, keys, values = xq.transpose(1, 2), keys.transpose(1, 2), values.transpose(1, 2)
-        return self.c_prod(xq.scaled_dot_product_attention(keys, values, mask).transpose(1, 2).reshape(bsz, seqlen, self.dim))
+        return self.c_proj(xq.scaled_dot_product_attention(keys, values, mask).transpose(1, 2).reshape(bsz, seqlen, self.dim))
 
 
 class FeedForward:
@@ -63,7 +63,7 @@ class FeedForward:
         self.c_proj = Linear(hidden_dim, dim, bias=True)
 
     def __call__(self, x: Tensor) -> Tensor:
-        self.c_proj(self.c_fc(x).gelu())
+        return self.c_proj(self.c_fc(x).gelu())
 
 
 class TransformerBlock:
@@ -82,7 +82,7 @@ class Transformer:
     def __init__(self, dim, n_heads, n_layers, norm_eps, vocab_size, max_seq_len=1024):
         self.vocab_size = vocab_size
         self.wte = Embedding(vocab_size, dim)
-        self.wpe = Embedding(vocab_size, dim)
+        self.wpe = Embedding(max_seq_len, dim)
         self.h = [TransformerBlock(dim, n_heads, norm_eps) for _ in range(n_layers)]
         self.ln_f = LayerNorm(dim, norm_eps)
         self.lm_head = Linear(dim, vocab_size, bias=False)
@@ -98,16 +98,16 @@ class Transformer:
             seqlen = tokens.shape[1]
             tok_emb = self.wte(tokens)
 
-        pos_emb = self.wpe(self.allpod.shrink((None, (start_pos, start_pos + seqlen))))
+        pos_emb = self.wpe(self.allpos.shrink((None, (start_pos, start_pos + seqlen))))
         h = tok_emb + pos_emb
 
         mask = (
-            Tensor.full((1, 1, seqlen, start_pos.val + seqlen), float("-inf"), dtype=h.dtype) .triu(start_pos.val + 1)
+            Tensor.full((1, 1, seqlen, start_pos.val + seqlen), float("-inf"), dtype=h.dtype).triu(start_pos.val + 1)
             if seqlen > 1 else None
         )
 
         for hi in self.h:
-            hi(h, start_pos, mask)
+            h = hi(h, start_pos, mask)
 
         logits = self.lm_head(self.ln_f(h))
 
@@ -124,7 +124,7 @@ class Transformer:
         return ret.flatten().realize()
 
     def __call__(self, tokens: Tensor, start_pos: Variable, temperature: float = 0.0) -> Tensor:
-        forward = (self.forward_jit if JIT and (isinstance(tokens, Variable) or tokens.shape[1] == 1) else self.foward)
+        forward = (self.forward_jit if JIT and (isinstance(tokens, Variable) or tokens.shape[1] == 1) else self.forward)
         return forward(tokens, start_pos, temperature)
 
 
@@ -147,7 +147,6 @@ class GPT2:
         load_state_dict(model, weights)
         return GPT2(model, tokenizer)
 
-
     def __init__(self, model, tokenizer):
         self.model = model
         self.tokenizer = tokenizer
@@ -161,13 +160,9 @@ class GPT2:
                 tokens = Variable("tokens", 0, VOCAB_SIZE).bind(toks[0][start_pos])
             else:
                 tokens = Tensor([x[start_pos:] for x in toks])
-            tok = (
-                self.model(tokens, Variable("start_pos", 1 if start_pos else 0), MAX_CONTEXT)
-                    .bind(start_pos, temperature)
-                    .numpy()
-                    .tolist()
-            )
+            var = Variable("start_pos", 1 if start_pos else 0, MAX_CONTEXT).bind(start_pos)
+            tok = self.model(tokens, var, temperature).numpy().tolist()
             start_pos = len(toks[0])
             for i, t in enumerate(tok):
                 toks[i].append(t)
-            return [self.tokenizer.decode(x) for x in toks]
+        return [self.tokenizer.decode(x) for x in toks]
